@@ -1,0 +1,97 @@
+MCS99XX_serial(Driver version MCS99XX_V_1.0.0.0)
+------------------------------------------------
+
+Kernel 2.6.23
+--------------
+
+			Port1(Bpp)	Port2(Bpp)	Baudrate	Modem	Protocol	Test
+			-------		------		---------	------	---------	----
+	
+	Rx		11010		11056		115200		8N1	z-modem		pass
+	Tx		22146		22010		230400		7E1	z-modem		pass
+
+
+
+Kernel 2.6.27
+--------------
+
+			Port1(Bpp)	Port2(Bpp)	Baudrate	Modem	Protocol	Test
+			-------		------		---------	------	---------	----
+	
+	Rx		11046		11180		115200		8N1	z-modem		pass
+	Tx		22163		21971		230400		7E1	z-modem		pass
+
+
+
+Kernel 2.6.31
+--------------
+
+			Port1(Bpp)	Port2(Bpp)	Baudrate	Modem	Protocol	Test
+			-------		------		---------	------	---------	----
+	
+	Rx		10978		11062		115200		8N1	z-modem		pass
+	Tx		22152		21966		230400		7E1	z-modem		pass
+
+
+
+Help Notes:
+***************************************************
+Configuration instructions:
+
+Modem:
+
+(i)Steps to configure modem in FC2 and FC4
+
+        In KPPP configuration select the device as /dev/usb/ttyUSB0.
+
+(ii)Steps to configure modem in FC3
+
+        rm /dev/modem
+        ln -sf /dev/ttyUSB0  /dev/modem
+
+        Now /dev/modem can be selected for  KPPP configuration.
+
+(iii)Steps to configure modem in FC5
+
+
+        In KPPP configuration select the device as /dev/ttyUSB0.
+
+Browsing net:
+        i.Deactivate the eth0 or any other network device.
+        ii.Open the net browser,select proxy as direct connection to Internet.
+
+
+
+
+Serial mouse configuration:
+
+        1.For this we need to edit /etc/X11/xorg.conf file and add serial mouse.
+
+        (i).Add the fallowing Line
+                InputDevice    "Mos7840Mouse0" "SendCoreEvents"
+
+        (ii)Also add the fallowing section
+
+                Section "InputDevice"
+                Identifier  "Mos7840Mouse0"
+                        Driver      "mouse"
+                        Option      "SendCoreEvents" "true"
+                        Option      "Protocol" "auto"
+                        Option      "Device" "/dev/ttyUSB0"
+                        Option      "ZAxisMapping" "4 5"
+                        Option      "Emulate3Buttons" "yes"
+                EndSection
+
+        2.One can refer to the xrog.conf_example for editing
+        3.After editing we have to restart the Xserver.
+
+Restarting Xserver:
+        i. in FC2, FC3 and FC5, alt+ctrl+Backspace should work.
+        ii. in FC4 with our observation, we have to enter in INIT3,
+                Do "service xfs srestart" and then "startx".
+
+
+***************************************************
+
+
+

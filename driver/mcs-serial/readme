@@ -1,0 +1,108 @@
+The Following files will be there with the tar of the Driver:
+
+	99xx.c
+	99xx.h
+	Makefile
+	README	
+	mcs99xx
+
+Building the Driver:
+--------------------
+	Change to the folder with the Starex source files. And run the following Command:
+		$ make
+
+	Once the driver is compliles the loadable module 99xx.ko will be created in the same folder.
+
+	**  '$' --this symbol represent the shell prompt on linux			
+
+Loading the Driver:
+-------------------
+	
+	To load the driver use the following command:
+		$ insmod 99xx.ko
+
+	**  '$' --this symbol represent the shell prompt on linux			
+
+Unloading the Driver:
+---------------------
+
+	To unload the driver use the following command:
+		$rmmod 99xx
+
+	**  '$' --this symbol represent the shell prompt on linux			
+
+Installing the Driver:
+----------------------
+
+	To install the driver use the following command:
+		
+		make install
+
+Uninstalling the Driver:
+------------------------
+
+	To un-install the driver use the following command:
+		
+		make uninstall
+
+Features Supported:
+-------------------
+
+	The driver supports all the features supported by the MCS99XX serial device.
+		Note: only baud rates upto 3.0Mbps are implemented in the current driver.
+	
+Feature Configuration:
+----------------------
+
+	This driver comes with a static array uart_99xx_contxts[ ] for all the 16 ports features in the 99xx.c file.
+	Where u can set the features like:
+		-DMA in RX
+		-DMA in TX
+		-enable/disable Flow control
+		-Flow control type
+		-RX fifo trigger level
+		-TX fifo trigger level
+		-x-on character
+		-x-off character
+
+	An example array setting for PORT 0 which will be recognised as /dev/ttyF0:			
+
+	//Port 0	--**This represents that this setting is for port 0 which will be recognised as /dev/ttyF0
+	{
+		.rx_dma_en	= 0,
+		.tx_dma_en	= 0,
+		.uart_mode	= MCS99XX_RS232_MODE,
+		.en_flow_control	= 0,
+		.flow_ctrl_type 	= MCS99XX_XON_XOFF_HW_FLOWCONTROL,
+		.rxfifotrigger	= 64,
+		.txfifotrigger	= 64,		
+		.x_on		= SERIAL_DEF_XON,
+		.x_off		= SERIAL_DEF_XOFF,
+	},
+
+To change the port to different modes for uart_mode settings use the following,
+
+MCS99XX_RS422_MODE           (422 mode)
+MCS99XX_RS485_HALF_DUPLEX    (485 half duplex)
+MCS99XX_RS485_FULL_DUPLEX    (485 full duplex)
+
+Kernels:
+--------
+
+	This driver is currently developed and tested on 2.6.15 linux kernel and above 	
+
+Limitations:
+------------
+
+	This driver supports a maximum of 16 serial devices. This can be modified as required		
+	
+
+Steps for setting parallel port :
+---------------------------------
+        1. rmmod lp
+        2. rmmod parport_pc
+        2. insmod /usr/lib/modules/2.6.15/kernel/drivers/parport/parport_pc io=0xb000 irq=10.
+
+Note: Here, the io and irq should be noted from lspci -v.
+~
+
