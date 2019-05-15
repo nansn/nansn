@@ -1,0 +1,7 @@
+git clone 	git@github.com:nansn/nansn.git 
+
+git push origin master
+
+ssh -v git@github.com
+git clone git@github.com:your_userid/your_repository_name
+
