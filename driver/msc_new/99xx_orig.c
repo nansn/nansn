@@ -2447,17 +2447,10 @@ int serial99xx_nocascade_register_port(struct uart_port *port,struct pci_dev *de
 
 		if (uart_99xx_contxts[index].tx_dma_en == 1) {
 			serial99xx_ports[index].dma_tx=1;
-
-
-			// modify by nansn, using inbound ATU  0 <--> 0xf6000000
-			serial99xx_ports[index].dma_tx_buf_p = 0;
-			serial99xx_ports[index].dma_tx_buf_v = phys_to_virt(0xf6000000);
-/*
 			serial99xx_ports[index].dma_tx_buf_v = 
 				(char *)pci_alloc_consistent(dev,DMA_TX_BUFFER_SZ,&serial99xx_ports[index].dma_tx_buf_p);
-*/
 			serial99xx_ports[index].serialise_txdma=0;
-			printk("dma_tx_buf_v=%p\n dma_tx_buf_p=%p\n",(unsigned int)serial99xx_ports[index].dma_tx_buf_v,
+			DEBUG("dma_tx_buf_v=0x%x\n dma_tx_buf_p=0x%x\n",(unsigned int)serial99xx_ports[index].dma_tx_buf_v,
 				(unsigned int)serial99xx_ports[index].dma_tx_buf_p);
 		} else {
 			serial99xx_ports[index].dma_tx=0;
@@ -2466,18 +2459,11 @@ int serial99xx_nocascade_register_port(struct uart_port *port,struct pci_dev *de
 		
 		if (uart_99xx_contxts[index].rx_dma_en == 1) {
 			serial99xx_ports[index].dma_rx=1;
-			
-			// modify by nansn, using inbound ATU  0 <--> 0xf6000000
-			serial99xx_ports[index].dma_rx_buf_p = 0x0 + DMA_TX_BUFFER_SZ;
-			serial99xx_ports[index].dma_rx_buf_v = phys_to_virt(0xf6000000 + DMA_TX_BUFFER_SZ);
-
-/* 
 			serial99xx_ports[index].dma_rx_buf_v = 
 				(char *)pci_alloc_consistent(dev,DMA_RX_BUFFER_SZ,&serial99xx_ports[index].dma_rx_buf_p);
-*/
 			serial99xx_ports[index].part_done_recv_cnt=0;	
 			serial99xx_ports[index].rx_dma_done_cnt=0;
-			printk("dma_rx_buf_v=0x%x\n dma_rx_buf_p=0x%x\n",(unsigned int)serial99xx_ports[index].dma_rx_buf_v,
+			DEBUG("dma_rx_buf_v=0x%x\n dma_rx_buf_p=0x%x\n",(unsigned int)serial99xx_ports[index].dma_rx_buf_v,
 				(unsigned int)serial99xx_ports[index].dma_rx_buf_p);
 		} else {
 			serial99xx_ports[index].dma_rx=0;
